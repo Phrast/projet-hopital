@@ -42,3 +42,6 @@ Un système de gestion de rendez-vous médical permettant aux patients de prendr
 - `GET /` : Page d'accueil de l'API
 - `GET /api/test-db` : Teste la connexion à la base de données
 - `GET /api/medecins` : Récupère la liste des médecins disponibles
+- `POST /api/auth/patient/register` : Inscription d'un patient
+- `POST /api/auth/login` : Connexion (patients et médecins)
+- `GET /api/profile` : Récupère les informations du profil utilisateur connecté
