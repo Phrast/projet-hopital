@@ -119,6 +119,178 @@ app.get('/api/medecins', (req, res) => {
   );
 });
 
+
+app.get('/api/rendez-vous/patient/:id', authenticateToken, (req, res) => {
+  const patientId = req.params.id;
+  
+  if (req.user.role === 'patient' && req.user.id != patientId) {
+    return res.status(403).json({ message: 'Accès non autorisé' });
+  }
+  
+  db.query(
+    `SELECT r.*, m.nom as medecin_nom, m.prenom as medecin_prenom, m.specialite 
+     FROM rendez_vous r 
+     JOIN medecins m ON r.medecin_id = m.id 
+     WHERE r.patient_id = ? 
+     ORDER BY r.date_heure`,
+    [patientId],
+    (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Erreur serveur' });
+      }
+      res.json(results);
+    }
+  );
+});
+
+app.get('/api/rendez-vous/medecin/:id', authenticateToken, (req, res) => {
+  const medecinId = req.params.id;
+  
+  if (req.user.role === 'medecin' && req.user.id != medecinId) {
+    return res.status(403).json({ message: 'Accès non autorisé' });
+  }
+  
+  db.query(
+    `SELECT r.*, p.nom as patient_nom, p.prenom as patient_prenom, p.telephone as patient_telephone 
+     FROM rendez_vous r 
+     JOIN patients p ON r.patient_id = p.id 
+     WHERE r.medecin_id = ? 
+     ORDER BY r.date_heure`,
+    [medecinId],
+    (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Erreur serveur' });
+      }
+      res.json(results);
+    }
+  );
+});
+
+app.post('/api/rendez-vous', authenticateToken, (req, res) => {
+  const { patient_id, medecin_id, date_heure, motif } = req.body;
+  
+  if (req.user.role === 'patient' && req.user.id != patient_id) {
+    return res.status(403).json({ message: 'Accès non autorisé' });
+  }
+  
+  if (!patient_id || !medecin_id || !date_heure || !motif) {
+    return res.status(400).json({ message: 'Tous les champs sont requis' });
+  }
+  
+  db.query(
+    'SELECT * FROM rendez_vous WHERE medecin_id = ? AND date_heure = ? AND statut != "annulé"',
+    [medecin_id, date_heure],
+    (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Erreur serveur' });
+      }
+      
+      if (results.length > 0) {
+        return res.status(400).json({ message: 'Ce créneau horaire est déjà réservé' });
+      }
+      
+      db.query(
+        'INSERT INTO rendez_vous (patient_id, medecin_id, date_heure, motif) VALUES (?, ?, ?, ?)',
+        [patient_id, medecin_id, date_heure, motif],
+        (err, results) => {
+          if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Erreur serveur' });
+          }
+          res.status(201).json({ id: results.insertId, message: 'Rendez-vous créé avec succès' });
+        }
+      );
+    }
+  );
+});
+
+app.put('/api/rendez-vous/:id', authenticateToken, (req, res) => {
+  const id = req.params.id;
+  const { statut, notes } = req.body;
+  
+  const statutsValides = ['en attente', 'confirmé', 'annulé', 'terminé'];
+  if (!statutsValides.includes(statut)) {
+    return res.status(400).json({ message: 'Statut invalide' });
+  }
+  
+  db.query(
+    'SELECT * FROM rendez_vous WHERE id = ?',
+    [id],
+    (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Erreur serveur' });
+      }
+      
+      if (results.length === 0) {
+        return res.status(404).json({ message: 'Rendez-vous non trouvé' });
+      }
+      
+      const rdv = results[0];
+      
+      if (req.user.role === 'patient' && req.user.id != rdv.patient_id) {
+        return res.status(403).json({ message: 'Accès non autorisé' });
+      }
+      
+      if (req.user.role === 'patient' && statut !== 'annulé') {
+        return res.status(403).json({ message: 'Les patients ne peuvent que annuler les rendez-vous' });
+      }
+      
+      db.query(
+        'UPDATE rendez_vous SET statut = ?, notes = ? WHERE id = ?',
+        [statut, notes || null, id],
+        (err, results) => {
+          if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Erreur serveur' });
+          }
+          res.json({ message: 'Rendez-vous mis à jour avec succès' });
+        }
+      );
+    }
+  );
+});
+
+app.delete('/api/rendez-vous/:id', authenticateToken, (req, res) => {
+  const id = req.params.id;
+  
+  db.query(
+    'SELECT * FROM rendez_vous WHERE id = ?',
+    [id],
+    (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Erreur serveur' });
+      }
+      
+      if (results.length === 0) {
+        return res.status(404).json({ message: 'Rendez-vous non trouvé' });
+      }
+      
+      const rdv = results[0];
+      
+      if (req.user.role === 'patient' && req.user.id != rdv.patient_id) {
+        return res.status(403).json({ message: 'Accès non autorisé' });
+      }
+      
+      db.query(
+        'UPDATE rendez_vous SET statut = ? WHERE id = ?',
+        ['annulé', id],
+        (err, results) => {
+          if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Erreur serveur' });
+          }
+          res.json({ message: 'Rendez-vous annulé avec succès' });
+        }
+      );
+    }
+  );
+});
+
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`);
 });

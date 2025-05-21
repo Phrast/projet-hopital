@@ -17,7 +17,7 @@ Un système de gestion de rendez-vous médical permettant aux patients de prendr
 - Gestion des statuts des rendez-vous (confirmation, annulation, etc.)
 
 
-## Technologies utilisées : +
+## Technologies utilisées :
 
 ### Backend
 - Node.js / Express
@@ -45,3 +45,8 @@ Un système de gestion de rendez-vous médical permettant aux patients de prendr
 - `POST /api/auth/patient/register` : Inscription d'un patient
 - `POST /api/auth/login` : Connexion (patients et médecins)
 - `GET /api/profile` : Récupère les informations du profil utilisateur connecté
+- `GET /api/rendez-vous/patient/:id` : Récupère les rendez-vous d'un patient
+- `GET /api/rendez-vous/medecin/:id` : Récupère les rendez-vous d'un médecin
+- `POST /api/rendez-vous` : Crée un nouveau rendez-vous
+- `PUT /api/rendez-vous/:id` : Met à jour le statut d'un rendez-vous
+- `DELETE /api/rendez-vous/:id` : Annule un rendez-vous (soft delete)
