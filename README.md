@@ -31,8 +31,14 @@ Un système de gestion de rendez-vous médical permettant aux patients de prendr
 - CSS personnalisé
 
 
-##  Structure de la base de données
+##  Structure de la base de données :
 
 - `patients` : Stocke les informations des utilisateurs patients
 - `medecins` : Stocke les informations des médecins
 - `rendez_vous` : Gère les rendez-vous entre patients et médecins
+
+
+## Routes disponibles :
+- `GET /` : Page d'accueil de l'API
+- `GET /api/test-db` : Teste la connexion à la base de données
+- `GET /api/medecins` : Récupère la liste des médecins disponibles
