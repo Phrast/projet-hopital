@@ -29,3 +29,10 @@ Un système de gestion de rendez-vous médical permettant aux patients de prendr
 - React
 - React Router
 - CSS personnalisé
+
+
+##  Structure de la base de données
+
+- `patients` : Stocke les informations des utilisateurs patients
+- `medecins` : Stocke les informations des médecins
+- `rendez_vous` : Gère les rendez-vous entre patients et médecins
