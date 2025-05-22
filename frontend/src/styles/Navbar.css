@@ -1,0 +1,135 @@
+/* Navbar.css - Version alternative avec Flexbox optimisé */
+
+.navbar {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* Logo toujours à gauche */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0070f3;
+  margin-right: 20px;
+  flex-shrink: 0; /* Empêche le logo de rétrécir */
+}
+
+.navbar-logo i {
+  margin-right: 10px;
+}
+
+/* Message de bienvenue, centré quand possible */
+.welcome-text {
+  color: #2c3e50;
+  font-weight: 500;
+  margin: 0 20px;
+  white-space: nowrap;
+}
+
+/* Groupe de liens de navigation */
+.nav-links {
+  display: flex;
+  align-items: center;
+  margin-left: auto; /* Pousse les liens vers la droite quand possible */
+  flex-grow: 1;
+  justify-content: center; /* Centre les liens */
+  gap: 20px; /* Espacement entre les liens */
+}
+
+.navbar-item {
+  color: #4a5568;
+  transition: color 0.3s, transform 0.2s;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.navbar-item:hover {
+  color: #0070f3;
+  transform: translateY(-2px);
+}
+
+/* Bouton d'inscription et déconnexion */
+.register-btn {
+  background-color: #0070f3;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: all 0.3s;
+  margin-left: 10px;
+}
+
+.register-btn:hover {
+  background-color: #0058c7;
+  transform: translateY(-2px);
+}
+
+.logout-btn {
+  background-color: transparent;
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-left: 20px;
+  white-space: nowrap;
+}
+
+.logout-btn:hover {
+  background-color: #e74c3c;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .navbar-menu {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .navbar-logo {
+    flex-basis: 100%;
+    justify-content: center;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  
+  .welcome-text {
+    flex-basis: 100%;
+    text-align: center;
+    margin: 0 0 10px 0;
+  }
+  
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-left: 0;
+    gap: 10px;
+  }
+  
+  .logout-btn {
+    margin: 10px auto 0;
+  }
+}
