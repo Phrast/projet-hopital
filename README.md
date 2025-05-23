@@ -50,3 +50,13 @@ Un système de gestion de rendez-vous médical permettant aux patients de prendr
 - `POST /api/rendez-vous` : Crée un nouveau rendez-vous
 - `PUT /api/rendez-vous/:id` : Met à jour le statut d'un rendez-vous
 - `DELETE /api/rendez-vous/:id` : Annule un rendez-vous (soft delete)
+
+## Pages disponibles
+
+- `/` : Page d'accueil
+- `/login-patient` : Connexion patient
+- `/login-medecin` : Connexion médecin
+- `/register-patient` : Inscription patient
+- `/dashboard-patient` : Tableau de bord patient (protégé)
+- `/dashboard-medecin` : Tableau de bord médecin (protégé)
+- `/prendre-rendez-vous` : Prise de rendez-vous (protégé)
