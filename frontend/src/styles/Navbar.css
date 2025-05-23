@@ -1,4 +1,4 @@
-/* Navbar.css - Version alternative avec Flexbox optimisé */
+/* Navbar.css - Style corrigé pour la barre de navigation */
 
 .navbar {
   background-color: #fff;
@@ -10,6 +10,8 @@
 }
 
 .navbar-container {
+  display: flex;
+  justify-content: center; /* Centrer le contenu */
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
@@ -18,71 +20,53 @@
 .navbar-menu {
   display: flex;
   align-items: center;
-  width: 100%;
+  justify-content: space-between; /* Espace le contenu */
+  width: 100%; /* Utilise toute la largeur disponible */
+  flex-wrap: wrap;
 }
 
-/* Logo toujours à gauche */
+/* Style du logo */
 .navbar-logo {
   display: flex;
   align-items: center;
   font-size: 1.5rem;
   font-weight: 700;
   color: #0070f3;
-  margin-right: 20px;
-  flex-shrink: 0; /* Empêche le logo de rétrécir */
+  margin-right: auto; /* Pousse les autres éléments vers la droite */
 }
 
 .navbar-logo i {
   margin-right: 10px;
 }
 
-/* Message de bienvenue, centré quand possible */
-.welcome-text {
-  color: #2c3e50;
-  font-weight: 500;
-  margin: 0 20px;
-  white-space: nowrap;
-}
-
-/* Groupe de liens de navigation */
-.nav-links {
-  display: flex;
-  align-items: center;
-  margin-left: auto; /* Pousse les liens vers la droite quand possible */
-  flex-grow: 1;
-  justify-content: center; /* Centre les liens */
-  gap: 20px; /* Espacement entre les liens */
-}
-
+/* Style des liens de navigation */
 .navbar-item {
   color: #4a5568;
-  transition: color 0.3s, transform 0.2s;
+  transition: color 0.3s;
   font-weight: 500;
-  padding: 8px 12px;
-  border-radius: 4px;
-  white-space: nowrap;
+  padding: 0 15px; /* Ajoute de l'espace horizontal entre les éléments */
+  margin: 0 5px; /* Ajoute des marges pour l'espacement */
 }
 
 .navbar-item:hover {
   color: #0070f3;
-  transform: translateY(-2px);
 }
 
-/* Bouton d'inscription et déconnexion */
+/* Style pour le bouton d'inscription */
 .register-btn {
   background-color: #0070f3;
-  color: white;
+  color: white !important;
   padding: 8px 16px;
   border-radius: 4px;
-  transition: all 0.3s;
-  margin-left: 10px;
+  transition: background-color 0.3s;
+  margin-left: 15px; /* Espace supplémentaire à gauche */
 }
 
 .register-btn:hover {
   background-color: #0058c7;
-  transform: translateY(-2px);
 }
 
+/* Style pour le bouton de déconnexion */
 .logout-btn {
   background-color: transparent;
   color: #e74c3c;
@@ -91,45 +75,43 @@
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s;
-  margin-left: 20px;
-  white-space: nowrap;
+  margin-left: 15px; /* Espace à gauche du bouton */
 }
 
 .logout-btn:hover {
   background-color: #e74c3c;
   color: white;
-  transform: translateY(-2px);
+}
+
+/* Style pour le message de bienvenue */
+.welcome-text {
+  color: #2c3e50;
+  font-weight: 500;
+  margin: 0 15px; /* Espacement horizontal */
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
   .navbar-menu {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
   }
   
   .navbar-logo {
-    flex-basis: 100%;
-    justify-content: center;
-    margin-right: 0;
-    margin-bottom: 10px;
+    margin: 0 0 15px 0; /* Espacement en bas seulement en mobile */
+  }
+  
+  .navbar-item {
+    margin: 5px 0;
   }
   
   .welcome-text {
-    flex-basis: 100%;
-    text-align: center;
-    margin: 0 0 10px 0;
+    margin: 10px 0;
   }
   
-  .nav-links {
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-left: 0;
-    gap: 10px;
-  }
-  
-  .logout-btn {
-    margin: 10px auto 0;
+  .logout-btn, 
+  .register-btn {
+    margin: 10px 0 0 0;
   }
 }
